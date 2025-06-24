@@ -1,25 +1,21 @@
 services:
   - type: web
     name: bookit
-    runtime: docker # Explicitly use Docker
+    runtime: docker
     dockerfilePath: Dockerfile.prod
-    env:
-      NODE_ENV: production
-    autoDeploy: true
+    env: production
     region: ohio
-    plan: free
     envVars:
       - key: NODE_ENV
         value: production
       - key: DATABASE_URL
         fromDatabase:
-          name: lacasita-db
+          name: bookit-db
           property: connectionString
-    # Remove Python-specific config
+    autoDeploy: true
 
-databases:
-  - name: lacasita-db
-    plan: free
+  - type: postgres
+    name: bookit-db
     region: ohio
-    databaseName: lacasita
-    user: lacasita_user
+    databaseName: bookit
+    user: bookit_user

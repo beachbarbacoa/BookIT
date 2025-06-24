@@ -1,44 +1,32 @@
-# Render Deployment Guide
+# BookIT Deployment Guide (Simplified)
 
 ## Prerequisites
 1. Render.com account
-2. GitHub repository for this project
+2. GitHub repository: https://github.com/beachbarbacoa/BookIT
 
 ## Deployment Steps
-1. **Create PostgreSQL Database**:
-   - Go to Render Dashboard → Databases → New PostgreSQL
-   - Name: `lacasita-db`
-   - Region: Ohio (free)
-   - Database Name: `lacasita`
-   - User: `lacasita_user`
+1. **Add render.yaml to Repository**:
+   - Make sure the [`render.yaml`](render.yaml) file exists in your project root
+   - Commit and push to GitHub
 
-2. **Get Connection String**:
-   - After database creation, copy the "Internal Connection String"
-   - Format: `postgres://user:password@host:port/dbname`
-
-3. **Create Web Service**:
-   - Go to Dashboard → Web Services → New Web Service
-   - Connect your GitHub repository
-   - Configure:
-     - Name: `lacasita-booking`
-     - Region: Ohio
-     - Branch: `main`
-     - Runtime: Docker
-     - Dockerfile Path: `Dockerfile.prod`
-     - Environment Variables:
-       - `NODE_ENV`: production
-       - `DATABASE_URL`: (paste connection string)
-
-4. **Deploy**:
-   - Click "Create Web Service"
-   - Render will build and deploy automatically
+2. **Deploy via Blueprint**:
+   - Go to Render Dashboard → New → Blueprint
+   - Connect your BookIT GitHub repository
+   - Click "Apply" to deploy both services:
+     - PostgreSQL database (bookit-db)
+     - Web service (bookit)
 
 ## Post-Deployment
-1. Access your app at: `https://lacasita-booking.onrender.com`
+1. Access your app at: `https://bookit.onrender.com`
 2. Test QR scanning with:
-   - https://quickchart.io/qr?text=https://lacasita-booking.onrender.com/business/test/reserve
+   - https://quickchart.io/qr?text=https://bookit.onrender.com/business/test/reserve
 
-## Troubleshooting
-- Check logs in Render Dashboard
-- Verify database connection string
-- Ensure all environment variables are set
+## Notes
+- The [`render.yaml`](render.yaml) file defines:
+  - PostgreSQL database with name `bookit-db`
+  - Web service using Dockerfile.prod
+  - Automatic connection between services
+- Render will automatically handle:
+  - Database creation
+  - Environment variable setup
+  - Docker-based deployment
