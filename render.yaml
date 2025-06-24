@@ -14,8 +14,8 @@ services:
           property: connectionString
     autoDeploy: true
 
-  - type: postgres
-    name: bookit-db
+databases:
+  - name: bookit-db
     region: ohio
     databaseName: bookit
     user: bookit_user

@@ -12,6 +12,7 @@
 2. **Deploy via Blueprint**:
    - Go to Render Dashboard → New → Blueprint
    - Connect your BookIT GitHub repository
+   - Name: `BookIT` (this will be your blueprint name)
    - Click "Apply" to deploy both services:
      - PostgreSQL database (bookit-db)
      - Web service (bookit)
