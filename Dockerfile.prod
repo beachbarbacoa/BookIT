@@ -11,16 +11,16 @@ RUN curl -sSL https://get.wasp.sh/installer.sh | sh
 ENV PATH="/root/.local/bin:$PATH"
 
 # Set up Wasp project
-WORKDIR /wasp
-COPY wasp-core/ .
+WORKDIR /app
+COPY wasp-core/ /app
 
 # Build Wasp project
-RUN wasp build
+RUN cd /app && wasp build
 
 # Stage 2: Node Builder
 FROM node:20-slim AS node-builder
 WORKDIR /app
-COPY --from=wasp-builder /wasp/.wasp/build/ .
+COPY --from=wasp-builder /app/.wasp/build/ .
 RUN npm install
 RUN npm run build
 
