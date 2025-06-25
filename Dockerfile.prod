@@ -17,8 +17,10 @@ RUN echo "Verifying Wasp installation" && \
 
 # Set up and build Wasp project
 WORKDIR /app
-COPY wasp-core /app
-RUN echo "Building Wasp project at /app" && \
+COPY wasp-core .
+RUN echo "Directory contents before build:" && \
+    ls -la && \
+    echo "Building Wasp project at /app" && \
     wasp build
 
 # Stage 2: Node Builder
