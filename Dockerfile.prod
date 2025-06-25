@@ -1,21 +1,26 @@
 # Stage 1: Wasp Builder
 FROM node:20-slim AS wasp-builder
 
-# Install curl and Wasp CLI
+# Install dependencies
 RUN apt-get update && apt-get install -y curl
-RUN curl -sSL https://get.wasp-lang.dev/installer.sh | sh
+
+# Install Wasp CLI
+RUN curl -sSL https://get.wasp.sh/installer.sh | sh
 
 # Add Wasp to PATH
 ENV PATH="/root/.local/bin:$PATH"
 
-WORKDIR /app
+# Set up Wasp project
+WORKDIR /wasp
 COPY wasp-core/ .
+
+# Build Wasp project
 RUN wasp build
 
 # Stage 2: Node Builder
 FROM node:20-slim AS node-builder
 WORKDIR /app
-COPY --from=wasp-builder /app/.wasp/build/ .
+COPY --from=wasp-builder /wasp/.wasp/build/ .
 RUN npm install
 RUN npm run build
 
