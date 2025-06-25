@@ -1,31 +1,33 @@
-# Stage 1: Build with official Wasp builder
-FROM wasp-lang/builder:0.16.6 AS wasp-builder
+# Stage 1: Base with Wasp installation
+FROM node:20-slim AS base
 WORKDIR /app
-COPY wasp-core/ .
 
-# Build the Wasp project
+# Install system dependencies
+RUN apt-get update && apt-get install -y curl build-essential
+
+# Install Wasp CLI
+RUN curl -sSL https://get.wasp.sh/installer.sh | sh
+ENV PATH="/root/.local/bin:$PATH"
+RUN wasp version
+
+# Stage 2: Build Wasp project
+FROM base AS wasp-builder
+WORKDIR /app/wasp-core
+COPY wasp-core .
 RUN wasp build
 
-# Stage 2: Node.js builder
+# Stage 3: Build Node.js application
 FROM node:20-slim AS node-builder
 WORKDIR /app
-COPY --from=wasp-builder /app/.wasp/build/ .
-
-# Install production dependencies
+COPY --from=wasp-builder /app/wasp-core/.wasp/build/ .
 RUN npm install --omit=dev
-
-# Build the Node.js application
 RUN npm run build
 
-# Stage 3: Production runtime
+# Stage 4: Production image
 FROM node:20-slim
 WORKDIR /app
-
-# Copy built artifacts
 COPY --from=node-builder /app/build ./build
 COPY --from=node-builder /app/node_modules ./node_modules
-
-# Set production environment
 ENV NODE_ENV production
 EXPOSE 3000
 CMD ["node", "build/server.js"]
