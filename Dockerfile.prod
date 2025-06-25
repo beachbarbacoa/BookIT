@@ -17,8 +17,6 @@ RUN echo "Verifying Wasp installation" && \
 
 # Set up and build Wasp project
 WORKDIR /app
-COPY wasp-core/package.json wasp-core/package-lock.json* ./
-RUN npm install
 COPY wasp-core /app
 RUN echo "Building Wasp project at /app" && \
     wasp build
@@ -27,7 +25,7 @@ RUN echo "Building Wasp project at /app" && \
 FROM node:20-slim AS node-builder
 WORKDIR /app
 COPY --from=wasp-builder /app/.wasp/build/ .
-RUN npm ci --only=production && \
+RUN npm install && \
     npm run build
 
 # Stage 3: Production
