@@ -12,10 +12,10 @@ ENV PATH="/root/.local/bin:$PATH"
 
 # Set up Wasp project
 WORKDIR /app
-COPY wasp-core/ /app
+COPY wasp-core /app
 
 # Build Wasp project
-RUN cd /app && wasp build
+RUN wasp build
 
 # Stage 2: Node Builder
 FROM node:20-slim AS node-builder
