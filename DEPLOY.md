@@ -5,8 +5,10 @@
 2. GitHub repository: https://github.com/beachbarbacoa/BookIT
 
 ## Deployment Steps
-1. **Add render.yaml to Repository**:
-   - Make sure the [`render.yaml`](render.yaml) file exists in your project root
+1. **Update Repository**:
+   - Make sure these files exist in your project root:
+     - [`render.yaml`](render.yaml)
+     - [`Dockerfile.prod`](Dockerfile.prod)
    - Commit and push to GitHub
 
 2. **Deploy via Blueprint**:
