@@ -17,6 +17,8 @@ COPY wasp-core /app
 # Verify and build Wasp project
 RUN echo "Building Wasp project at /app"
 RUN ls -la /app
+RUN which wasp
+RUN wasp --version
 RUN wasp build
 
 # Stage 2: Node Builder
