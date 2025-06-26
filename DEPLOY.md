@@ -5,26 +5,30 @@
 2. Add Wasp to PATH: `export PATH=$PATH:$HOME/.local/bin`
 3. Install Docker
 
-## Local Build & Run
-```bash
-docker build -t bookit -f Dockerfile.prod .
-docker run -p 3000:3000 bookit
-```
-
 ## Render Deployment
 1. Push your code to GitHub
-2. Create a new Web Service on Render
-3. Configure:
-   - Build Command: (leave empty, Render will use Dockerfile.prod)
-   - Start Command: `node build/server.js`
+2. Create a new Web Service on Render:
+   - Select "Node" environment
+   - Build Command:
+        ```
+        curl -sSL https://get.wasp.sh/installer.sh | sh -s -- -v 0.16.6
+        export PATH=$PATH:$HOME/.local/bin
+        cd wasp-core
+        wasp build
+        cd ..
+        npm install -g serve
+        ```
+   - Start Command: `serve -s wasp-core/.wasp/build -p $PORT`
    - Environment: production
+   - Add environment variable: NODE_ENV=production
 4. Set environment variables
 5. Deploy
 
-## Render Blueprint (Alternative)
-1. Ensure these files are in your repository:
-   - `render.yaml`
-   - `Dockerfile.prod`
+## Render Blueprint (Recommended)
+1. Ensure `render.yaml` is in your repository
+2. Go to Render Dashboard → New → Blueprint
+3. Connect your GitHub repository
+4. Click "Apply" to deploy both web service and database
 2. Go to Render Dashboard → New → Blueprint
 3. Connect your GitHub repository
 4. Click "Apply" to deploy
@@ -35,5 +39,5 @@ docker run -p 3000:3000 bookit
 
 ## Troubleshooting
 - If build fails, check for syntax errors in main.wasp
-- Verify Docker has enough resources (2GB RAM recommended)
+- Verify Wasp version compatibility
 - Check Render logs for errors
