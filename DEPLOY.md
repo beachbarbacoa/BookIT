@@ -1,47 +1,47 @@
-# BookIT Deployment Guide
+# BookIT Deployment Guide (Docker-based)
 
 ## Prerequisites
-1. Install Wasp CLI: `curl -sSL https://get.wasp.sh/installer.sh | sh`
-2. Add Wasp to PATH: `export PATH=$PATH:$HOME/.local/bin`
-3. Install Docker
+1. Docker installed on your local machine (for testing)
+2. Render.com account
+3. GitHub repository with BookIT code
 
-## Render Deployment
+## Docker-based Deployment
 1. Push your code to GitHub
 2. Create a new Web Service on Render:
-   - Select "Node" environment
-   - Build Command:
-        ```
-        curl -sSL https://get.wasp.sh/installer.sh | sh -s -- -v 0.16.6
-        export PATH=$PATH:$HOME/.local/bin
-        cd wasp-core
-        wasp build
-        cd ..
-        npm install -g serve
-        ```
-   - Start Command: `serve -s wasp-core/.wasp/build -p $PORT`
+   - Select "Docker" environment
+   - Dockerfile Path: `Dockerfile.prod`
    - Environment: production
-   - Add environment variable: NODE_ENV=production
-4. Set environment variables
-5. Deploy
+   - Add environment variable: 
+        - Key: NODE_ENV 
+          Value: production
+3. Link to bookit-db database service (if applicable)
 
 ## Render Blueprint (Recommended)
-1. Ensure `render.yaml` is in your repository
+1. Ensure these files are in your repository:
+   - `render.yaml`
+   - `Dockerfile.prod`
 2. Go to Render Dashboard → New → Blueprint
 3. Connect your GitHub repository
 4. Click "Apply" to deploy both web service and database
-2. Go to Render Dashboard → New → Blueprint
-3. Connect your GitHub repository
-4. Click "Apply" to deploy
+
+## Local Testing
+```bash
+docker build -t bookit -f Dockerfile.prod .
+docker run -p 3000:3000 bookit
+```
 
 ## Post-Deployment
 - Access your app at: `https://<your-service>.onrender.com`
 - Test QR scanning: `https://quickchart.io/qr?text=https://<your-service>.onrender.com/business/test/reserve`
 
 ## Troubleshooting
-- If build fails with "Couldn't find wasp project root":
-  - Verify wasp-core/main.wasp exists in your repository
-  - Check Render logs for project structure listing
-- For other issues:
-  - Check for syntax errors in main.wasp
-  - Verify Wasp version compatibility
-  - Check Render logs for errors
+- If build fails:
+  - Verify Dockerfile syntax
+  - Check for compatibility issues with Wasp version 0.16.6
+- If app shows 404 errors:
+  - Verify static file paths in serverSetup.js
+  - Check routing configuration
+- For database issues:
+  - Verify connection string in render.yaml
+  - Check database resource allocation
+- Always inspect Render logs for detailed error messages

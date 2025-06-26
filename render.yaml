@@ -1,28 +1,17 @@
 services:
   - type: web
     name: bookit
-    env: node
-    plan: free
+    runtime: docker
+    dockerfilePath: Dockerfile.prod
+    env: production
     region: ohio
-    buildCommand: |
-      # Install Wasp
-      curl -sSL https://get.wasp.sh/installer.sh | sh -s -- -v 0.16.6
-      
-      # Configure PATH
-      export PATH="$HOME/.local/bin:$PATH"
-      
-      # Verify installation and project structure
-      echo "Wasp path: $(which wasp)"
-      wasp version
-      echo "Project structure:"
-      ls -la wasp-core
-      
-      # Build project from the correct path
-      wasp build wasp-core
-    startCommand: npm start
     envVars:
       - key: NODE_ENV
         value: production
+      - key: DATABASE_URL
+        fromDatabase:
+          name: bookit-db
+          property: connectionString
     autoDeploy: true
 
 databases:
