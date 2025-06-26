@@ -9,9 +9,7 @@ services:
       export PATH=$PATH:$HOME/.local/bin
       cd wasp-core
       wasp build
-      cd ..
-      npm install -g serve
-    startCommand: serve -s wasp-core/.wasp/build -p $PORT
+    startCommand: node wasp-core/.wasp/build/server.js
     envVars:
       - key: NODE_ENV
         value: production
