@@ -3,7 +3,7 @@ FROM node:20-slim AS base
 WORKDIR /app
 
 # Install system dependencies
-RUN apt-get update && apt-get install -y curl build-essential
+RUN apt-get update && apt-get install -y curl build-essential python3
 
 # Install Wasp CLI
 RUN curl -sSL https://get.wasp.sh/installer.sh | sh
@@ -12,9 +12,9 @@ RUN wasp version
 
 # Stage 2: Build Wasp project
 FROM base AS wasp-builder
-WORKDIR /app
-COPY wasp-core ./wasp-core
-RUN wasp build wasp-core
+WORKDIR /app/wasp-core
+COPY wasp-core .
+RUN ls -la && wasp build --verbose
 
 # Stage 3: Build Node.js application
 FROM node:20-slim AS node-builder
