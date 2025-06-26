@@ -5,16 +5,16 @@ WORKDIR /app
 # Install system dependencies
 RUN apt-get update && apt-get install -y curl build-essential python3
 
-# Install Wasp CLI with version pinning
+# Install Wasp CLI with version pinning and proper PATH setup
 RUN curl -sSL https://get.wasp.sh/installer.sh | sh -s -- -v 0.16.6
 ENV PATH="/root/.local/bin:$PATH"
-RUN wasp version
+RUN echo "PATH is: $PATH" && wasp version
 
 # Stage 2: Build Wasp project
 FROM base AS wasp-builder
 WORKDIR /app
 COPY wasp-core ./wasp
-RUN cd /app/wasp && wasp build
+RUN cd /app/wasp && ls -la && echo "Running wasp build in: $(pwd)" && wasp build --verbose
 
 # Stage 3: Build Node.js application
 FROM node:20-slim AS node-builder
