@@ -1,35 +1,44 @@
-# BookIT Deployment Guide (Simplified)
+# BookIT Deployment Guide
 
 ## Prerequisites
-1. Render.com account
-2. GitHub repository: https://github.com/beachbarbacoa/BookIT
+1. Install Wasp CLI: `curl -sSL https://get.wasp.sh/installer.sh | sh`
+2. Add Wasp to PATH: `export PATH=$PATH:$HOME/.local/bin`
+3. Install Docker
 
-## Deployment Steps
-1. **Update Repository**:
-   - Make sure these files exist in your project root:
-     - [`render.yaml`](render.yaml)
-     - [`Dockerfile.prod`](Dockerfile.prod)
-   - Commit and push to GitHub
+## Local Build & Run
+```bash
+# Build the project
+chmod +x build.sh
+./build.sh
 
-2. **Deploy via Blueprint**:
-   - Go to Render Dashboard → New → Blueprint
-   - Connect your BookIT GitHub repository
-   - Name: `BookIT` (this will be your blueprint name)
-   - Click "Apply" to deploy both services:
-     - PostgreSQL database (bookit-db)
-     - Web service (bookit)
+# Run the Docker container
+docker run -p 3000:3000 bookit
+```
+
+## Render Deployment
+1. Push your code to GitHub
+2. Create a new Web Service on Render
+3. Configure:
+   - Build Command: `chmod +x build.sh && ./build.sh`
+   - Start Command: `node build/server.js`
+   - Environment: production
+4. Set environment variables
+5. Deploy
+
+## Render Blueprint (Alternative)
+1. Ensure these files are in your repository:
+   - `render.yaml`
+   - `Dockerfile.prod`
+   - `build.sh`
+2. Go to Render Dashboard → New → Blueprint
+3. Connect your GitHub repository
+4. Click "Apply" to deploy
 
 ## Post-Deployment
-1. Access your app at: `https://bookit.onrender.com`
-2. Test QR scanning with:
-   - https://quickchart.io/qr?text=https://bookit.onrender.com/business/test/reserve
+- Access your app at: `https://<your-service>.onrender.com`
+- Test QR scanning: `https://quickchart.io/qr?text=https://<your-service>.onrender.com/business/test/reserve`
 
-## Notes
-- The [`render.yaml`](render.yaml) file defines:
-  - PostgreSQL database with name `bookit-db`
-  - Web service using Dockerfile.prod
-  - Automatic connection between services
-- Render will automatically handle:
-  - Database creation
-  - Environment variable setup
-  - Docker-based deployment
+## Troubleshooting
+- If build fails, check Wasp installation
+- Verify Docker has enough resources (2GB RAM recommended)
+- Check Render logs for errors

@@ -1,33 +1,11 @@
-# Stage 1: Base with Wasp installation
-FROM node:20-slim AS base
-WORKDIR /app
-
-# Install system dependencies
-RUN apt-get update && apt-get install -y curl build-essential python3
-
-# Install Wasp CLI directly from GitHub release
-RUN curl -sL https://github.com/wasp-lang/wasp/releases/download/v0.16.6/wasp-linux-amd64 -o /usr/local/bin/wasp \
-    && chmod +x /usr/local/bin/wasp
-RUN wasp version
-
-# Stage 2: Build Wasp project
-FROM base AS wasp-builder
-WORKDIR /app
-COPY wasp-core ./wasp
-RUN cd /app/wasp && ls -la && echo "Running wasp build in: $(pwd)" && wasp build --verbose
-
-# Stage 3: Build Node.js application
-FROM node:20-slim AS node-builder
-WORKDIR /app
-COPY --from=wasp-builder /app/wasp/.wasp/build/ .
-RUN npm install --omit=dev
-RUN npm run build
-
-# Stage 4: Production image
+# Single-stage production image
 FROM node:20-slim
 WORKDIR /app
-COPY --from=node-builder /app/build ./build
-COPY --from=node-builder /app/node_modules ./node_modules
+
+# Copy pre-built application
+COPY wasp-core/.wasp/build/ ./build
+COPY wasp-core/.wasp/build/node_modules ./node_modules
+
 ENV NODE_ENV production
 EXPOSE 3000
 CMD ["node", "build/server.js"]
