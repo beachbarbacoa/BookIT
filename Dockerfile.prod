@@ -6,7 +6,7 @@ WORKDIR /app
 RUN apt-get update && apt-get install -y curl build-essential python3
 
 # Install Wasp CLI using npm
-RUN npm install -g wasp
+RUN npm install -g @wasp/cli
 RUN wasp version
 
 # Stage 2: Build Wasp project
