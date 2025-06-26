@@ -5,8 +5,17 @@ services:
     plan: free
     region: ohio
     buildCommand: |
+      # Install Wasp
       curl -sSL https://get.wasp.sh/installer.sh | sh -s -- -v 0.16.6
-      export PATH=$PATH:$HOME/.local/bin
+      
+      # Configure PATH
+      export PATH="$HOME/.local/bin:$PATH"
+      
+      # Verify installation
+      echo "Wasp path: $(which wasp)"
+      wasp version
+      
+      # Build project
       cd wasp-core
       wasp build
     startCommand: npm start
