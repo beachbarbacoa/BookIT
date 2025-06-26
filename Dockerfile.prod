@@ -1,10 +1,16 @@
-# Single-stage production image
+# Stage 1: Build Wasp project using official Wasp image
+FROM wasp-lang/wasp:0.16.6 AS wasp-builder
+WORKDIR /app
+COPY wasp-core .
+RUN wasp build
+
+# Stage 2: Production runtime
 FROM node:20-slim
 WORKDIR /app
 
-# Copy pre-built application
-COPY wasp-core/.wasp/build/ ./build
-COPY wasp-core/.wasp/build/node_modules ./node_modules
+# Copy built application from wasp-builder stage
+COPY --from=wasp-builder /app/.wasp/build/ ./build
+COPY --from=wasp-builder /app/.wasp/build/node_modules ./node_modules
 
 ENV NODE_ENV production
 EXPOSE 3000

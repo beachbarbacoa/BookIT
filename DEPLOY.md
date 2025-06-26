@@ -7,11 +7,7 @@
 
 ## Local Build & Run
 ```bash
-# Build the project
-chmod +x build.sh
-./build.sh
-
-# Run the Docker container
+docker build -t bookit -f Dockerfile.prod .
 docker run -p 3000:3000 bookit
 ```
 
@@ -19,7 +15,7 @@ docker run -p 3000:3000 bookit
 1. Push your code to GitHub
 2. Create a new Web Service on Render
 3. Configure:
-   - Build Command: `chmod +x build.sh && ./build.sh`
+   - Build Command: (leave empty, Render will use Dockerfile.prod)
    - Start Command: `node build/server.js`
    - Environment: production
 4. Set environment variables
@@ -29,7 +25,6 @@ docker run -p 3000:3000 bookit
 1. Ensure these files are in your repository:
    - `render.yaml`
    - `Dockerfile.prod`
-   - `build.sh`
 2. Go to Render Dashboard → New → Blueprint
 3. Connect your GitHub repository
 4. Click "Apply" to deploy
@@ -39,6 +34,6 @@ docker run -p 3000:3000 bookit
 - Test QR scanning: `https://quickchart.io/qr?text=https://<your-service>.onrender.com/business/test/reserve`
 
 ## Troubleshooting
-- If build fails, check Wasp installation
+- If build fails, check for syntax errors in main.wasp
 - Verify Docker has enough resources (2GB RAM recommended)
 - Check Render logs for errors
