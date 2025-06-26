@@ -11,13 +11,14 @@ services:
       # Configure PATH
       export PATH="$HOME/.local/bin:$PATH"
       
-      # Verify installation
+      # Verify installation and project structure
       echo "Wasp path: $(which wasp)"
       wasp version
+      echo "Project structure:"
+      ls -la wasp-core
       
-      # Build project
-      cd wasp-core
-      wasp build
+      # Build project from the correct path
+      wasp build wasp-core
     startCommand: npm start
     envVars:
       - key: NODE_ENV

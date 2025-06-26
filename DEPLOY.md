@@ -38,6 +38,10 @@
 - Test QR scanning: `https://quickchart.io/qr?text=https://<your-service>.onrender.com/business/test/reserve`
 
 ## Troubleshooting
-- If build fails, check for syntax errors in main.wasp
-- Verify Wasp version compatibility
-- Check Render logs for errors
+- If build fails with "Couldn't find wasp project root":
+  - Verify wasp-core/main.wasp exists in your repository
+  - Check Render logs for project structure listing
+- For other issues:
+  - Check for syntax errors in main.wasp
+  - Verify Wasp version compatibility
+  - Check Render logs for errors
