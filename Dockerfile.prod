@@ -12,9 +12,9 @@ RUN wasp version
 
 # Stage 2: Build Wasp project
 FROM base AS wasp-builder
-WORKDIR /app/wasp-core
-COPY wasp-core .
-RUN wasp build
+WORKDIR /app
+COPY wasp-core ./wasp-core
+RUN wasp build wasp-core
 
 # Stage 3: Build Node.js application
 FROM node:20-slim AS node-builder
