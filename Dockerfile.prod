@@ -1,5 +1,5 @@
 # Stage 1: Build Wasp project using official Wasp image
-FROM wasp-lang/wasp:0.16.6 AS wasp-builder
+FROM wasp/wasp:0.16.6 AS wasp-builder
 WORKDIR /app
 COPY wasp-core .
 RUN wasp build
