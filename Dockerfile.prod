@@ -1,8 +1,9 @@
-# Stage 1: Build Wasp project using official Wasp image
-FROM wasp-lang/wasp:latest AS wasp-builder
+# Stage 1: Build Wasp project using Node.js base
+FROM node:20 AS wasp-builder
 WORKDIR /app
 COPY wasp-core .
-RUN wasp build
+# Install Wasp globally and build the project
+RUN npm install -g wasp@0.16.6 && wasp build
 
 # Stage 2: Production runtime
 FROM node:20-slim

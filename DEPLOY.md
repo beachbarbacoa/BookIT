@@ -26,8 +26,12 @@
 
 ## Local Testing
 ```bash
+# Build and run the Docker image
 docker build -t bookit -f Dockerfile.prod .
 docker run -p 3000:3000 bookit
+
+# Alternatively, use the build script:
+# ./build.sh
 ```
 
 ## Post-Deployment
@@ -37,7 +41,7 @@ docker run -p 3000:3000 bookit
 ## Troubleshooting
 - If build fails:
   - Verify Dockerfile syntax
-  - Check for compatibility issues with Wasp version 0.16.6
+  - Ensure Wasp version 0.16.6 is specified in Dockerfile
 - If app shows 404 errors:
   - Verify static file paths in serverSetup.js
   - Check routing configuration
