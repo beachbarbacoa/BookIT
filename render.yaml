@@ -3,9 +3,9 @@ services:
     name: bookit-web
     env: node
     buildCommand: |
-        npm install -g @wasp/cli@0.16.6
+        npm install
         cd wasp-core
-        wasp build
+        npx wasp build
     startCommand: node wasp-core/.wasp/build/server.js
     envVars:
       - key: NODE_ENV

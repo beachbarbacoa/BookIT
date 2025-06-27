@@ -2,7 +2,6 @@
   "name": "bookit",
   "version": "1.0.0",
   "scripts": {
-    "render-build": "npm install -g @wasp/cli@0.16.6 && cd wasp-core && wasp build",
     "start": "node wasp-core/.wasp/build/server.js"
   }
 }
