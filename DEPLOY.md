@@ -41,7 +41,7 @@ docker run -p 3000:3000 bookit
 ## Troubleshooting
 - If build fails:
   - Verify Dockerfile syntax
-  - Ensure Dockerfile uses the official Wasp image: `wasp/wasp:0.16.6`
+  - Check for compatibility issues with Wasp version 0.16.6
 - If app shows 404 errors:
   - Verify static file paths in serverSetup.js
   - Check routing configuration
@@ -49,3 +49,29 @@ docker run -p 3000:3000 bookit
   - Verify connection string in render.yaml
   - Check database resource allocation
 - Always inspect Render logs for detailed error messages
+
+## Alternative Deployment Method (Native Node.js)
+If Docker deployment continues to fail, consider using Render's native Node.js environment:
+
+1. Update render.yaml:
+```yaml
+services:
+  - type: web
+    name: bookit-web
+    env: node
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+```
+
+2. Add build script to package.json:
+```json
+"scripts": {
+  "build": "cd wasp-core && wasp build",
+  "start": "node wasp-core/.wasp/build/server.js"
+}
+```
+
+3. Commit and push changes

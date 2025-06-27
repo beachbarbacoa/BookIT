@@ -1,21 +1,10 @@
 services:
   - type: web
-    name: bookit
-    runtime: docker
-    dockerfilePath: Dockerfile.prod
-    env: production
-    region: ohio
+    name: bookit-web
+    env: node
+    buildCommand: npm install && npm run build
+    startCommand: npm start
     envVars:
       - key: NODE_ENV
         value: production
-      - key: DATABASE_URL
-        fromDatabase:
-          name: bookit-db
-          property: connectionString
     autoDeploy: true
-
-databases:
-  - name: bookit-db
-    region: ohio
-    databaseName: bookit
-    user: bookit_user

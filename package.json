@@ -2,6 +2,7 @@
   "name": "bookit",
   "version": "1.0.0",
   "scripts": {
+    "build": "cd wasp-core && wasp build",
     "start": "node wasp-core/.wasp/build/server.js"
   }
 }

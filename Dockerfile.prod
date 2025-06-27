@@ -1,7 +1,11 @@
-# Stage 1: Build Wasp project using official Wasp image
-FROM wasp/wasp:0.16.6 AS wasp-builder
+# Stage 1: Build Wasp project from source
+FROM node:20 AS wasp-builder
 WORKDIR /app
 COPY wasp-core .
+
+# Install Wasp dependencies and build
+RUN curl -sSL https://raw.githubusercontent.com/wasp-lang/wasp/main/install.sh | sh -s -- -v v0.16.6
+ENV PATH="/root/.local/bin:$PATH"
 RUN wasp build
 
 # Stage 2: Production runtime
