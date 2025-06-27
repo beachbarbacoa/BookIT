@@ -1,0 +1,13 @@
+FROM node:20-slim
+WORKDIR /app
+COPY . .
+
+# Install Wasp with proper error handling
+RUN set -eux; \
+    curl -fL https://raw.githubusercontent.com/wasp-lang/wasp/v0.16.6/install.sh | sh -s -- -v v0.16.6 || \
+    { echo "Fallback installation method"; npm install -g @wasp/cli@0.16.6; } && \
+    which wasp
+
+ENV PATH="/root/.local/bin:$PATH"
+RUN cd wasp-core && wasp build --verbose
+CMD ["node", "wasp-core/.wasp/build/server.js"]
