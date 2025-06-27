@@ -26,12 +26,16 @@
 
 ## Local Testing
 ```bash
-# Build and run the Docker image
-docker build -t bookit -f Dockerfile.prod .
+# Build and run using the binary-based Dockerfile
+docker build -t bookit -f Dockerfile.binary .
 docker run -p 3000:3000 bookit
 
-# Alternatively, use the build script:
-# ./build.sh
+# Or use the build script (now uses binary approach):
+./build.sh
+
+# For the simplified Dockerfile:
+docker build -t bookit-simple -f Dockerfile.simple .
+docker run -p 3000:3000 bookit-simple
 ```
 
 ## Post-Deployment
@@ -42,6 +46,8 @@ docker run -p 3000:3000 bookit
 - If build fails:
   - Verify Dockerfile syntax
   - Check for compatibility issues with Wasp version 0.16.6
+  - For binary installation issues, verify the download URL at:
+    https://github.com/wasp-lang/wasp/releases/tag/v0.16.6
 - If app shows 404 errors:
   - Verify static file paths in serverSetup.js
   - Check routing configuration
