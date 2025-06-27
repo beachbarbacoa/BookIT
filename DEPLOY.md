@@ -41,7 +41,7 @@ docker run -p 3000:3000 bookit
 ## Troubleshooting
 - If build fails:
   - Verify Dockerfile syntax
-  - Ensure Wasp version 0.16.6 is specified in Dockerfile
+  - Ensure correct Wasp CLI package is installed: `@wasp/cli@0.16.6`
 - If app shows 404 errors:
   - Verify static file paths in serverSetup.js
   - Check routing configuration
