@@ -3,13 +3,24 @@ FROM node:20 AS wasp-builder
 WORKDIR /app
 COPY wasp-core .
 
-# Install Wasp with proper error handling
+# Install Wasp from source
 RUN set -eux; \
-    curl -fL https://raw.githubusercontent.com/wasp-lang/wasp/v0.16.6/install.sh | sh -s -- -v v0.16.6 || \
-    { echo "Fallback installation method"; npm install -g @wasp/cli@0.16.6; } && \
-    which wasp
+    # Install Wasp build dependencies
+    apt-get update && apt-get install -y build-essential; \
+    # Clone specific Wasp version
+    git clone --depth 1 --branch v0.16.6 https://github.com/wasp-lang/wasp.git /tmp/wasp; \
+    # Build and install Wasp
+    cd /tmp/wasp && \
+    npm install && \
+    npm run build && \
+    npm link; \
+    # Clean up
+    cd / && rm -rf /tmp/wasp
 
-ENV PATH="/root/.local/bin:$PATH"
+# Verify installation
+RUN which wasp && wasp version
+
+# Build the project
 RUN wasp build --verbose
 
 # Stage 2: Production runtime

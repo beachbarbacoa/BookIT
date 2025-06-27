@@ -2,12 +2,23 @@ FROM node:20-slim
 WORKDIR /app
 COPY . .
 
-# Install Wasp with proper error handling
+# Install Wasp from source
 RUN set -eux; \
-    curl -fL https://raw.githubusercontent.com/wasp-lang/wasp/v0.16.6/install.sh | sh -s -- -v v0.16.6 || \
-    { echo "Fallback installation method"; npm install -g @wasp/cli@0.16.6; } && \
-    which wasp
+    # Install Wasp build dependencies
+    apt-get update && apt-get install -y build-essential git; \
+    # Clone specific Wasp version
+    git clone --depth 1 --branch v0.16.6 https://github.com/wasp-lang/wasp.git /tmp/wasp; \
+    # Build and install Wasp
+    cd /tmp/wasp && \
+    npm install && \
+    npm run build && \
+    npm link; \
+    # Clean up
+    cd / && rm -rf /tmp/wasp
 
-ENV PATH="/root/.local/bin:$PATH"
+# Verify installation
+RUN which wasp && wasp version
+
+# Build the project
 RUN cd wasp-core && wasp build --verbose
 CMD ["node", "wasp-core/.wasp/build/server.js"]
