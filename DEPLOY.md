@@ -5,37 +5,36 @@
 2. Render.com account
 3. GitHub repository with BookIT code
 
-## Docker-based Deployment
+## Native Node.js Deployment (Recommended)
 1. Push your code to GitHub
 2. Create a new Web Service on Render:
-   - Select "Docker" environment
-   - Dockerfile Path: `Dockerfile.prod`
-   - Environment: production
-   - Add environment variable: 
-        - Key: NODE_ENV 
+   - Select "Node" environment
+   - Connect to your GitHub repository
+   - Set build command: `npm run render-build`
+   - Set start command: `npm start`
+   - Add environment variable:
+        - Key: NODE_ENV
           Value: production
 3. Link to bookit-db database service (if applicable)
 
-## Render Blueprint (Recommended)
-1. Ensure these files are in your repository:
-   - `render.yaml`
-   - `Dockerfile.prod`
+## Render Blueprint
+1. Ensure `render.yaml` is in your repository
 2. Go to Render Dashboard → New → Blueprint
 3. Connect your GitHub repository
-4. Click "Apply" to deploy both web service and database
+4. Click "Apply" to deploy
 
-## Local Testing
+## Local Testing (Native)
 ```bash
-# Build and run using the binary-based Dockerfile
-docker build -t bookit -f Dockerfile.binary .
-docker run -p 3000:3000 bookit
+# Install dependencies
+npm install
 
-# Or use the build script (now uses binary approach):
-./build.sh
+# Build the project
+npm run render-build
 
-# For the simplified Dockerfile:
-docker build -t bookit-simple -f Dockerfile.simple .
-docker run -p 3000:3000 bookit-simple
+# Start the server
+npm start
+
+# Access at http://localhost:3000
 ```
 
 ## Post-Deployment
@@ -44,10 +43,17 @@ docker run -p 3000:3000 bookit-simple
 
 ## Troubleshooting
 - If build fails:
-  - Verify Dockerfile syntax
-  - Check for compatibility issues with Wasp version 0.16.6
-  - For binary installation issues, verify the download URL at:
-    https://github.com/wasp-lang/wasp/releases/tag/v0.16.6
+  - If build fails:
+    - Verify Node.js version compatibility (v18+)
+    - Check for correct Wasp CLI installation
+    - Ensure wasp-core directory exists with main.wasp file
+  - If app shows 404 errors:
+    - Verify static file paths in serverSetup.js
+    - Check routing configuration
+  - For database issues:
+    - Verify connection string in render.yaml
+    - Check database resource allocation
+  - Always inspect Render logs for detailed error messages
 - If app shows 404 errors:
   - Verify static file paths in serverSetup.js
   - Check routing configuration
