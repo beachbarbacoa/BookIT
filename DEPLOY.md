@@ -10,12 +10,13 @@
 2. Push cleaned code to GitHub
 3. Create new Web Service on Render:
    - Select "Node" environment
-   - Build command: `cd wasp-core && npx wasp build`
-   - Start command: `node wasp-core/.wasp/build/server.js`
+   - Build command: `npm run render-build`
+   - Start command: `npm start`
    - Add environment variable:
         - Key: NODE_ENV
           Value: production
 4. Link to bookit-db database service (if applicable)
+5. IMPORTANT: Ensure service is set to "Node" environment, not Docker
 
 ## Render Blueprint
 1. Ensure `render.yaml` is in your repository
