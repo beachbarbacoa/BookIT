@@ -5,28 +5,30 @@
 2. Render.com account
 3. GitHub repository with BookIT code
 
-## Native Node.js Deployment
-1. Push your code to GitHub
-2. Create a new Web Service on Render:
+## Pure Node.js Deployment
+1. Delete all Dockerfiles and Docker-related scripts
+2. Push cleaned code to GitHub
+3. Create new Web Service on Render:
    - Select "Node" environment
-   - Connect to your GitHub repository
-   - Set build command:
-        ```bash
-        npm install
-        cd wasp-core
-        npx wasp build
-        ```
-   - Set start command: `node wasp-core/.wasp/build/server.js`
+   - Build command: `cd wasp-core && npx wasp build`
+   - Start command: `node wasp-core/.wasp/build/server.js`
    - Add environment variable:
         - Key: NODE_ENV
           Value: production
-3. Link to bookit-db database service (if applicable)
+4. Link to bookit-db database service (if applicable)
 
 ## Render Blueprint
-1. Ensure `render.yaml` and `.renderignore` are in your repository
+1. Ensure `render.yaml` is in your repository
 2. Go to Render Dashboard → New → Blueprint
 3. Connect your GitHub repository
 4. Click "Apply" to deploy
+
+## Local Testing
+```bash
+cd wasp-core
+npx wasp build
+node .wasp/build/server.js
+```
 
 ## Local Testing (Native)
 ```bash
