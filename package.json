@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "scripts": {
     "start": "node wasp-core/.wasp/build/server.js",
-    "render-build": "npm install && npx --yes @wasp/cli@latest build"
+    "build": "wasp build"
+  },
+  "devDependencies": {
+    "@wasp/cli": "latest"
   }
 }
