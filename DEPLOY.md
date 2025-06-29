@@ -25,4 +25,4 @@ Make sure your latest code, including the corrected `render.yaml` blueprint, is 
 
 Render will now create a fresh database and a fresh web service, automatically linking them together. This is the most robust and reliable way to deploy your application.
 
-**Note:** The previous version of this guide had a typo (`psql` instead of `postgres`). This has been corrected.
+**Note:** The previous version of this guide used an incorrect Blueprint structure. The `render.yaml` has been updated to use a top-level `databases` key, which is the correct syntax.
