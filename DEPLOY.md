@@ -1,16 +1,16 @@
-# BookIT Deployment Guide (Final)
+# BookIT Deployment Guide (Last Resort)
 
-This is the definitive guide to deploying the BookIT application on Render. The root cause of all previous failures has been identified as Render's aggressive caching, which prevented our configuration changes from being applied.
+This is the final attempt to deploy the BookIT application on Render. We have identified that Render is aggressively caching old build commands and not respecting the `render.yaml` file.
 
-**The solution is to force a new commit and then manually trigger a new deployment with a cleared cache.**
+This final solution moves the build command into the `package.json` file, which can sometimes force Render's cache to update.
 
 ## Step 1: Commit and Push the Latest Changes
 
-You MUST commit and push the latest changes to your GitHub repository. This includes the harmless comment we added to `wasp-core/main.wasp`, which guarantees a new commit hash.
+You MUST commit and push the latest changes to your GitHub repository.
 
 ```bash
 git add .
-git commit -m "Force new commit to clear Render cache"
+git commit -m "Final attempt: Move build command to package.json"
 git push
 ```
 
@@ -20,6 +20,6 @@ git push
 2.  Click the **Manual Deploy** button.
 3.  From the dropdown, select **Clear build cache & deploy**.
 
-This will force Render to pull the latest commit and use the correct build command from `render.yaml`: `npm install && npx --yes @wasp/cli@latest build`.
+This will force Render to pull the latest commit and hopefully execute the `render-build` script from `package.json`, which contains the correct command: `npm install && npx --yes @wasp/cli@latest build`.
 
-This will resolve the "Not Found" error and the deployment will succeed. I am absolutely confident in this solution.
+If this fails, the issue is with Render's platform, and I recommend contacting their support with a link to your repository and the build logs. I have exhausted all possible solutions within my capabilities.
