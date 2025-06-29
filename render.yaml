@@ -2,9 +2,14 @@ services:
   - type: web
     name: bookit-web
     env: node
-    buildCommand: npm run render-build
-    startCommand: npm start
+    plan: free
+    region: oregon
+    nodeVersion: "20"
+    buildCommand: "npm install && npx --yes @wasp/cli@0.16.6 build"
+    startCommand: "npm start"
+    healthCheckPath: /
     envVars:
       - key: NODE_ENV
         value: production
-    autoDeploy: true
+      - key: WASP_TELEMETRY_ENABLED
+        value: "false"
