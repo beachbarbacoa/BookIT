@@ -1,11 +1,15 @@
+# Render Blueprint for BookIT
+# This file defines both the web service and the database.
+
 services:
+  # Web Service
   - type: web
     name: bookit-web
     env: node
     plan: free
     region: oregon
     nodeVersion: "20"
-    buildCommand: "npm run render-build"
+    buildCommand: "npm install && npx --yes @wasp/cli@latest build"
     startCommand: "npm start"
     healthCheckPath: /
     envVars:
@@ -13,3 +17,14 @@ services:
         value: production
       - key: WASP_TELEMETRY_ENABLED
         value: "false"
+      - key: DATABASE_URL # This links the web service to the database
+        fromDatabase:
+          name: bookit-db
+          property: connectionString
+
+  # Database Service
+  - type: psql
+    name: bookit-db
+    plan: free
+    region: oregon
+    postgresMajorVersion: 16
