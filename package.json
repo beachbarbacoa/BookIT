@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "start": "node wasp-core/.wasp/build/server.js",
-    "build": "wasp build"
+    "build": "cd wasp-core && wasp build"
   },
   "devDependencies": {
     "@wasp/cli": "latest"

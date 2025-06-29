@@ -1,6 +1,6 @@
-# BookIT Deployment Guide (Render Blueprint - Final)
+# BookIT Deployment Guide (Render Blueprint - Simplified)
 
-This is the definitive guide to deploying the BookIT application on Render. The previous build failures were caused by an issue with `npx` being unable to fetch the Wasp CLI. The solution is to make the Wasp CLI an explicit `devDependency` in `package.json`.
+This is the definitive guide to deploying the BookIT application on Render. The previous "sync failed" error indicated a problem with parsing the `render.yaml` file. This has been resolved by simplifying the Blueprint to its bare essentials.
 
 ## Step 1: Delete ALL Existing Infrastructure on Render
 
@@ -12,7 +12,7 @@ To ensure a clean slate, you **MUST** delete any old services or databases relat
 
 ## Step 2: Ensure Your Code is on GitHub
 
-Make sure your latest code, including the updated `render.yaml` and `package.json`, is pushed to your GitHub repository.
+Make sure your latest code, including the simplified `render.yaml` and corrected `package.json`, is pushed to your GitHub repository.
 
 ## Step 3: Create a New Blueprint on Render
 
@@ -21,7 +21,7 @@ Make sure your latest code, including the updated `render.yaml` and `package.jso
 3.  You will see two new services planned: `bookit-web` (Web Service) and `bookit-db` (PostgreSQL).
 4.  Click **Apply** to create and deploy both services.
 
-The build command is now `npm install && npm run build`, which is a more standard and reliable approach.
+This simplified Blueprint should now be parsed correctly by Render, resolving the "sync failed" error.
 
 ## Local Testing
 
