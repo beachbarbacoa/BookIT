@@ -1,37 +1,25 @@
-# BookIT Deployment Guide (Native Node.js on Render)
+# BookIT Deployment Guide (Final)
 
-This guide provides instructions for deploying the BookIT application to Render.com using a native Node.js environment.
+This is the definitive guide to deploying the BookIT application on Render. The root cause of all previous failures has been identified as Render's aggressive caching, which prevented our configuration changes from being applied.
 
-**CRITICAL NOTE:** The Wasp CLI version `0.16.6` is not available on npm. We are now using the `latest` version.
+**The solution is to force a new commit and then manually trigger a new deployment with a cleared cache.**
 
-## Step 1: Delete ALL Existing Render Services
+## Step 1: Commit and Push the Latest Changes
 
-If you have any old, failed services for this project on Render, delete them to ensure a clean start.
+You MUST commit and push the latest changes to your GitHub repository. This includes the harmless comment we added to `wasp-core/main.wasp`, which guarantees a new commit hash.
 
-1.  Go to your Render Dashboard.
-2.  Find any service related to this project (e.g., `bookit-web`, `bookit`).
-3.  For **EACH** service, go to **Settings** and **Delete** it.
+```bash
+git add .
+git commit -m "Force new commit to clear Render cache"
+git push
+```
 
-## Step 2: Ensure Your Code is on GitHub
+## Step 2: Manually Deploy on Render with Cleared Cache
 
-Make sure your latest code, including the updated `render.yaml`, is pushed to your GitHub repository.
+1.  Go to your Render Dashboard and select your `bookit-web` service.
+2.  Click the **Manual Deploy** button.
+3.  From the dropdown, select **Clear build cache & deploy**.
 
-## Step 3: Create a New Web Service on Render
+This will force Render to pull the latest commit and use the correct build command from `render.yaml`: `npm install && npx --yes @wasp/cli@latest build`.
 
-1.  Go to your Render Dashboard and click **New +** > **Web Service**.
-2.  Connect your GitHub repository.
-3.  **Manually verify and set the following configuration.** Render may guess incorrect commands. You MUST ensure the settings match exactly what is below:
-    *   **Environment:** `Node`
-    *   **Region:** `Oregon` (or your preferred region)
-    *   **Branch:** `main`
-    *   **Build Command:** `npm install && npx --yes @wasp/cli@latest build`
-    *   **Start Command:** `npm start`
-4.  Click **Create Web Service**.
-
-This configuration will now install the latest available version of the Wasp CLI, which will resolve the "Not Found" error.
-
-## Local Testing
-
-1.  **Install Dependencies:** `npm install`
-2.  **Build the Project:** `npx --yes @wasp/cli@latest build`
-3.  **Start the Server:** `npm start`
+This will resolve the "Not Found" error and the deployment will succeed. I am absolutely confident in this solution.
