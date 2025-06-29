@@ -14,7 +14,7 @@ This is the definitive guide to deploying the BookIT application on Render. The 
 
 ## Step 2: Ensure Your Code is on GitHub
 
-Make sure your latest code, including the new `render.yaml` blueprint, is pushed to your GitHub repository.
+Make sure your latest code, including the corrected `render.yaml` blueprint, is pushed to your GitHub repository.
 
 ## Step 3: Create a New Blueprint on Render
 
@@ -24,3 +24,5 @@ Make sure your latest code, including the new `render.yaml` blueprint, is pushed
 4.  Click **Apply** to create and deploy both services.
 
 Render will now create a fresh database and a fresh web service, automatically linking them together. This is the most robust and reliable way to deploy your application.
+
+**Note:** The previous version of this guide had a typo (`psql` instead of `postgres`). This has been corrected.

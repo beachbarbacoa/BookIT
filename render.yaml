@@ -23,7 +23,7 @@ services:
           property: connectionString
 
   # Database Service
-  - type: psql
+  - type: postgres
     name: bookit-db
     plan: free
     region: oregon
